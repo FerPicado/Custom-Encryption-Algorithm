@@ -1,4 +1,3 @@
-
 import os
 from dotenv import load_dotenv
 import string
@@ -8,14 +7,17 @@ load_dotenv()
 
 def encode_message(message):
     key = int(os.getenv("KEY", default=7))  # Obtener la clave de la variable de entorno o usar 7 por defecto
-    chars = string.digits + string.ascii_letters + "áéíóú" + " " # Abecedario personalizado
+    chars = string.digits + string.ascii_letters + "áéíóú" # Abecedario personalizado
     encoded_text = ""
     for letter in message:
-        if letter in chars:
-            value = chars.index(letter) + 1
-            encrypted_value = (value * key) % len(chars)
-            encoded_text += chars[encrypted_value - 1]
-        else:
+        try:
+            if letter in chars:
+                value = chars.index(letter) + 1
+                encrypted_value = (value * key) % len(chars)
+                encoded_text += chars[encrypted_value - 1]
+            else:
+                encoded_text += letter
+        except ValueError:
             encoded_text += letter
     return encoded_text
 
@@ -24,11 +26,14 @@ def decode_message(encoded_text):
     chars = string.digits + string.ascii_letters + "áéíóú"  # Abecedario personalizado
     decoded_text = ""
     for letter in encoded_text:
-        if letter in chars:
-            value = chars.index(letter) + 1
-            decrypted_value = (value * pow(key, -1, len(chars))) % len(chars)
-            decoded_text += chars[decrypted_value - 1]
-        else:
+        try:
+            if letter in chars:
+                value = chars.index(letter) + 1
+                decrypted_value = (value * pow(key, -1, len(chars))) % len(chars)
+                decoded_text += chars[decrypted_value - 1]
+            else:
+                decoded_text += letter
+        except:
             decoded_text += letter
     return decoded_text
 
@@ -45,5 +50,3 @@ print(f"Decrypted message: {decrypted_text}")
 
 # Verificar si el texto desencriptado coincide con el texto original
 print(f"{plain_text == decrypted_text}") # True / False
-
-    
