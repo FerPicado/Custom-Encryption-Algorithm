@@ -7,7 +7,7 @@ load_dotenv()
 
 def encode_message(message):
     key = int(os.getenv("KEY", default=7))  # Obtener la clave de la variable de entorno o usar 7 por defecto
-    chars = string.digits + string.ascii_letters + "áéíóú" # Abecedario personalizado
+    chars = string.digits + string.ascii_letters + " " + "áéíóú" # Abecedario personalizado
     encoded_text = ""
     for letter in message:
         try:
@@ -23,7 +23,7 @@ def encode_message(message):
 
 def decode_message(encoded_text):
     key = int(os.getenv("KEY", default=7))  # Obtener la clave de la variable de entorno o usar 7 por defecto
-    chars = string.digits + string.ascii_letters + "áéíóú"  # Abecedario personalizado
+    chars = string.digits + string.ascii_letters + " " + "áéíóú"  # Abecedario personalizado
     decoded_text = ""
     for letter in encoded_text:
         try:
